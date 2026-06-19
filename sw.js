@@ -15,7 +15,7 @@
 
 'use strict';
 
-const CACHE = 'xaura-v4';
+const CACHE = 'xaura-v5';
 
 /* Resuelve una ruta relativa al scope del SW (funciona en subcarpetas). */
 const u = (path) => new URL(path, self.registration.scope).toString();
@@ -49,6 +49,7 @@ const PRECACHE_URLS = [
   'js/core/events.js',
   'js/core/trading.js',
   'js/core/settings.js',
+  'js/core/fx.js',
   'js/core/aggregations.js',
   'js/core/currency.js',
   'js/core/dates.js',

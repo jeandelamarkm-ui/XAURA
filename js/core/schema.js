@@ -163,6 +163,8 @@ export function defaultSettings() {
     primaryCurrency: 'COP',
     fxRate: { usdToCop: 4000, date: today, manual: true },
     fxHistory: [{ usdToCop: 4000, date: today }],
+    fxAuto: true, // actualiza la tasa USD/COP automáticamente desde el mercado
+
     ui: {
       defaultModule: 'personal',
       hideBalances: false,

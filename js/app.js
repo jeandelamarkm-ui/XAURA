@@ -21,6 +21,8 @@
 
 import { loadDB, getDB, flush } from './core/store.js';
 import { getSettings } from './core/settings.js';
+import { autoUpdateRate } from './core/fx.js';
+import { hoy } from './core/dates.js';
 import { getStreak, needsTodayRegister } from './core/streak.js';
 import { startRouter } from './router.js';
 import { mountNav } from './ui/nav.js';
@@ -204,7 +206,11 @@ function wireGlobalEvents() {
   window.addEventListener('pagehide', persist);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') persist();
+    else syncFxRate(false); // al volver a la app, refresca la tasa (throttled)
   });
+
+  // Al recuperar conexión, intenta actualizar la tasa.
+  window.addEventListener('online', () => syncFxRate(false));
 
   // Aviso de almacenamiento lleno (lo emite store.js).
   window.addEventListener('xaura:quota-exceeded', () => {
@@ -295,10 +301,22 @@ function requestPersistentStorage() {
   } catch (_e) { /* entorno sin storage API */ }
 }
 
+// Sincroniza la tasa USD/COP con el mercado (no bloquea). Al lograrlo, emite
+// 'fx:changed' para que Dashboard y Trading refresquen sus conversiones.
+function syncFxRate(force) {
+  autoUpdateRate({ force: !!force })
+    .then((r) => {
+      if (r && r.ok) bus.emit('fx:changed', { usdToCop: r.rate, date: hoy(), source: r.source });
+    })
+    .catch(() => { /* sin red u otro error: se conserva la última tasa */ });
+}
+
 function boot() {
   // 1) DB lista (loadDB migra/repara forma y persiste primer arranque).
   loadDB();
   requestPersistentStorage();
+  // Tasa de cambio en vivo (best-effort, asíncrona).
+  syncFxRate(false);
 
   // 2) Tema desde settings.
   const s = getSettings();

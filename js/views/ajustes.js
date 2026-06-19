@@ -28,6 +28,8 @@ import {
   getSettings, updateSettings, setFxRate, getFxRate,
 } from '../core/settings.js';
 
+import { autoUpdateRate } from '../core/fx.js';
+
 import {
   getTradingAccounts, updateTradingAccount, addTradingAccount,
 } from '../core/trading.js';
@@ -56,6 +58,7 @@ const ICON = {
   candle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v17a1 1 0 0 0 1 1h16"/><rect x="8" y="9" width="3" height="6" rx="1"/><path d="M9.5 6v3M9.5 15v2"/></svg>',
   install: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M5 19h14"/></svg>',
   info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.5h.01"/></svg>',
+  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg>',
   chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
   download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M5 19h14"/></svg>',
   upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M8 13l4-4 4 4"/><path d="M5 5h14"/></svg>',
@@ -304,25 +307,77 @@ function sectionPerfil() {
 /* ============================================================================
  *  SECCIÓN · MONEDA Y TASA
  * ========================================================================== */
+// Texto de estado de la tasa: "19 jun 2026, 1:30 p. m. · automática".
+function fxStatusText(fx, fxAuto) {
+  let tiempo = '—';
+  const when = fx && fx.fetchedAt ? new Date(fx.fetchedAt) : null;
+  if (when && !isNaN(when.getTime())) {
+    const fecha = formatDateEs(fx.date || when.toISOString().slice(0, 10));
+    let hora = '';
+    try { hora = when.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' }); } catch (_e) {}
+    tiempo = hora ? (fecha + ', ' + hora) : fecha;
+  } else if (fx && fx.date) {
+    tiempo = formatDateEs(fx.date);
+  }
+  return tiempo + ' · ' + (fxAuto !== false ? 'automática' : 'manual');
+}
+
+// Lanza una actualización forzada de la tasa y refresca la vista.
+function refreshRateNow() {
+  toast('Buscando tasa del mercado…');
+  autoUpdateRate({ force: true }).then((r) => {
+    if (r && r.ok) {
+      emitFx(r.rate);
+      toast('Tasa actualizada: US$1 = ' + fmtCOP(r.rate), { type: 'success' });
+    } else if (r && r.reason === 'offline') {
+      toast('Sin conexión: se conserva la última tasa', { type: 'error' });
+    } else {
+      toast('No se pudo obtener la tasa', { type: 'error' });
+    }
+    paint();
+  }).catch(() => toast('No se pudo obtener la tasa', { type: 'error' }));
+}
+
 function sectionMoneda() {
   const s = getSettings();
   const sec = groupSection('Moneda y tasa');
   const g = sec._group;
 
   const fx = (s && s.fxRate) ? s.fxRate : { usdToCop: getFxRate(), date: hoy() };
+
+  // Tasa actual (clic para editar manualmente).
   g.appendChild(row({
     icon: ICON.coin,
     label: 'Tasa USD / COP',
-    value: fmtCOP(fx.usdToCop),
+    value: 'US$1 = ' + fmtCOP(fx.usdToCop),
     onClick: openRateSheet,
   }));
 
-  // Fecha de actualización.
-  const dateRow = elh('div', 'settings-row');
-  dateRow.appendChild(elh('span', 'settings-row__ic', ICON.info));
-  dateRow.appendChild(elh('span', 'settings-row__label', 'Tasa actualizada'));
-  dateRow.appendChild(elh('span', 'settings-row__value', fx.date ? formatDateEs(fx.date) : '—'));
-  g.appendChild(dateRow);
+  // Toggle: actualización automática desde el mercado.
+  g.appendChild(switchRow({
+    icon: ICON.refresh,
+    label: 'Actualizar al dólar automáticamente',
+    checked: s.fxAuto !== false,
+    onChange: (checked) => {
+      updateSettings({ fxAuto: checked });
+      if (checked) refreshRateNow();
+      else paint();
+    },
+  }));
+
+  // Estado de la tasa (fecha/hora + modo).
+  const stRow = elh('div', 'settings-row');
+  stRow.appendChild(elh('span', 'settings-row__ic', ICON.info));
+  stRow.appendChild(elh('span', 'settings-row__label', 'Actualizada'));
+  stRow.appendChild(elh('span', 'settings-row__value', fxStatusText(fx, s.fxAuto)));
+  g.appendChild(stRow);
+
+  // Botón: actualizar ahora.
+  g.appendChild(row({
+    icon: ICON.refresh,
+    label: 'Actualizar ahora',
+    onClick: refreshRateNow,
+  }));
 
   // Toggle mostrar COP en trading.
   g.appendChild(switchRow({
@@ -379,7 +434,10 @@ function openRateSheet() {
         onClick: () => {
           const v = ctrl.getValue();
           if (v <= 0) { toast('Ingresa una tasa válida', { type: 'error' }); return false; }
-          setFxRate(v, hoy());
+          // Edición manual: fija la tasa y desactiva el modo automático para
+          // que no se sobrescriba sola.
+          updateSettings({ fxAuto: false });
+          setFxRate(v, hoy(), { manual: true });
           emitFx(v);
           emitChanged('set-fx');
           try { ctrl.destroy(); } catch (_e) { /* noop */ }

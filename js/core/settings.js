@@ -46,15 +46,24 @@ export function updateSettings(patch) {
 /* ============================================================
  *  TASA USD -> COP
  * ============================================================ */
-// setFxRate(usdToCop, date): fija la tasa vigente y la apila en fxHistory.
-export function setFxRate(usdToCop, date) {
+// setFxRate(usdToCop, date, opts): fija la tasa vigente y la apila en fxHistory.
+// opts: { manual=true, source, fetchedAt } — manual:false marca actualización
+// automática desde el mercado (ver core/fx.js).
+export function setFxRate(usdToCop, date, opts = {}) {
   const db = getDB();
   const s = db.settings;
   const rate = num(usdToCop, s.fxRate ? s.fxRate.usdToCop : 4000);
   const safeRate = rate > 0 ? rate : (s.fxRate ? s.fxRate.usdToCop : 4000);
   const d = (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) ? date : isoDate();
+  const manual = opts.manual !== false;
 
-  s.fxRate = { usdToCop: safeRate, date: d, manual: true };
+  s.fxRate = {
+    usdToCop: safeRate,
+    date: d,
+    manual,
+    source: opts.source || (manual ? 'manual' : 'auto'),
+    fetchedAt: opts.fetchedAt || nowISO(),
+  };
 
   if (!Array.isArray(s.fxHistory)) s.fxHistory = [];
   // Si ya hay una entrada para esa fecha, se reemplaza; si no, se apila.
