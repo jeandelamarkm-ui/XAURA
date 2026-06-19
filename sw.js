@@ -15,7 +15,7 @@
 
 'use strict';
 
-const CACHE = 'xaura-v3';
+const CACHE = 'xaura-v4';
 
 /* Resuelve una ruta relativa al scope del SW (funciona en subcarpetas). */
 const u = (path) => new URL(path, self.registration.scope).toString();

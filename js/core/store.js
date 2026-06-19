@@ -181,13 +181,17 @@ export function saveDB(db) {
     _db = db;
   }
   _pendingDirty = true;
+  // Persistencia INMEDIATA y síncrona. En móvil (sobre todo iOS PWA) los
+  // eventos de cierre (pagehide/visibilitychange) NO siempre se disparan al
+  // salir, por lo que un guardado diferido se perdería. localStorage es rápido
+  // y el db es pequeño (KBs), así que no se justifica un debounce que arriesgue
+  // los datos del usuario. (Antes esto era un setTimeout de 350ms → bug de
+  // "se borra la info al salir").
   if (_saveTimer !== null) {
     clearTimeout(_saveTimer);
-  }
-  _saveTimer = setTimeout(() => {
     _saveTimer = null;
-    if (_db) persistNow(_db);
-  }, SAVE_DEBOUNCE_MS);
+  }
+  return persistNow(_db);
 }
 
 // commit(): fuerza la persistencia inmediata del db en memoria (cancela debounce).

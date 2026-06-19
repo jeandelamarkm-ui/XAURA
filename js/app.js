@@ -283,9 +283,22 @@ function startOnboarding() {
 /* ============================================================================
  *  BOOTSTRAP
  * ========================================================================== */
+// Pide al navegador almacenamiento PERSISTENTE para que no se desaloje
+// localStorage bajo presión (mejora durabilidad en móvil). Best-effort.
+function requestPersistentStorage() {
+  try {
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persisted().then((already) => {
+        if (!already) navigator.storage.persist().catch(() => {});
+      }).catch(() => {});
+    }
+  } catch (_e) { /* entorno sin storage API */ }
+}
+
 function boot() {
   // 1) DB lista (loadDB migra/repara forma y persiste primer arranque).
   loadDB();
+  requestPersistentStorage();
 
   // 2) Tema desde settings.
   const s = getSettings();
