@@ -1,0 +1,243 @@
+/* ============================================================================
+   XAURA · base.css
+   Reset moderno, html/body, tipografía base, safe-area, scroll, selección
+   y clases utilitarias tipográficas (.x-*), vidrio (.x-glass), micro-interacción
+   (.pressable, .enter, .pulse-aura). Cargar DESPUÉS de tokens.css.
+   ============================================================================ */
+
+/* ===== RESET MODERNO ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-base);
+  background-image: var(--gradient-aura);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-normal);
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+  /* Safe areas: el shell maneja el resto, esto evita texto bajo el notch */
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* Medios fluidos */
+img, svg, video, canvas, picture { display: block; max-width: 100%; }
+svg { fill: currentColor; }
+
+/* Formularios heredan la tipografía */
+input, button, textarea, select { font: inherit; color: inherit; background: none; border: none; }
+button { cursor: pointer; }
+
+/* Listas sin viñetas por defecto en la UI */
+ul, ol { list-style: none; }
+
+/* Enlaces */
+a { color: inherit; text-decoration: none; }
+
+/* Tablas */
+table { border-collapse: collapse; width: 100%; }
+
+/* Quitar spinners de inputs numéricos */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+/* Texto roto que no desborde */
+h1, h2, h3, h4, p, span, div { overflow-wrap: break-word; }
+
+/* ===== SCROLL ===== */
+.scroll-y { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: var(--r-pill); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
+/* ===== SELECCIÓN ===== */
+::selection { background: var(--gold-300); color: var(--text-primary); }
+::-moz-selection { background: var(--gold-300); color: var(--text-primary); }
+
+/* Focus accesible solo con teclado */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--r-sm); }
+:focus:not(:focus-visible) { outline: none; }
+
+/* Oculto accesible */
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* ===== TIPOGRAFÍA BASE ===== */
+h1, h2, h3 { font-family: var(--font-serif); font-weight: 500; line-height: var(--lh-tight); }
+strong, b { font-weight: 600; }
+
+/* ===== CLASES UTILITARIAS TIPOGRÁFICAS ===== */
+.x-display {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+}
+.x-h1 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+}
+.x-h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+}
+.x-h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+}
+.x-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-secondary);
+}
+.x-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* Cifras: mono + tabular en todas partes */
+.x-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  letter-spacing: var(--ls-num);
+  white-space: nowrap;
+}
+.x-num--lg {
+  font-size: clamp(28px, 9vw, var(--fs-display));
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.x-num--pos { color: var(--positive); }
+.x-num--neg { color: var(--negative); }
+
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary  { color: var(--text-tertiary); }
+.text-gold      { color: var(--gold); }
+.text-pos { color: var(--positive); }
+.text-neg { color: var(--negative); }
+
+/* ===== VIDRIO ===== */
+.x-glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border-n);
+  border-radius: var(--r-lg);
+}
+.x-glass--bar {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-bar)) saturate(160%);
+  backdrop-filter: blur(var(--glass-blur-bar)) saturate(160%);
+  border: 1px solid var(--glass-border-n);
+}
+
+/* ===== MICRO-INTERACCIONES ===== */
+.pressable {
+  transition: transform var(--dur-fast) var(--ease-soft),
+              filter var(--dur-fast) var(--ease-soft),
+              opacity var(--dur-fast) var(--ease-soft);
+  -webkit-user-select: none; user-select: none;
+  touch-action: manipulation;
+}
+.pressable:active { transform: scale(0.97); }
+
+/* Entrada suave de elementos */
+.enter { animation: x-enter var(--dur-slow) var(--ease-out) both; }
+@keyframes x-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Entradas escalonadas para listas / grids */
+.enter-stagger > * { animation: x-enter var(--dur-slow) var(--ease-out) both; }
+.enter-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.enter-stagger > *:nth-child(2) { animation-delay: 40ms; }
+.enter-stagger > *:nth-child(3) { animation-delay: 80ms; }
+.enter-stagger > *:nth-child(4) { animation-delay: 120ms; }
+.enter-stagger > *:nth-child(5) { animation-delay: 160ms; }
+.enter-stagger > *:nth-child(6) { animation-delay: 200ms; }
+.enter-stagger > *:nth-child(7) { animation-delay: 240ms; }
+.enter-stagger > *:nth-child(8) { animation-delay: 280ms; }
+
+/* Aura pulsante (racha, FAB, acentos vivos) */
+.pulse-aura { position: relative; }
+.pulse-aura::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 var(--gold-glow);
+  animation: x-pulse 2.4s var(--ease-out) infinite;
+  pointer-events: none;
+}
+@keyframes x-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--gold-glow); }
+  70%  { box-shadow: 0 0 0 14px rgba(212,175,55,0); }
+  100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); }
+}
+
+/* Count-up / shimmer de carga */
+.shimmer {
+  background: linear-gradient(100deg,
+    var(--bg-surface-2) 30%, var(--bg-surface-3) 50%, var(--bg-surface-2) 70%);
+  background-size: 200% 100%;
+  animation: x-shimmer 1.4s linear infinite;
+  border-radius: var(--r-sm);
+}
+@keyframes x-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* Utilidades de layout mínimas reutilizables */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: var(--sp-1); } .gap-2 { gap: var(--sp-2); }
+.gap-3 { gap: var(--sp-3); } .gap-4 { gap: var(--sp-4); }
+.mt-2 { margin-top: var(--sp-2); } .mt-3 { margin-top: var(--sp-3); }
+.mt-4 { margin-top: var(--sp-4); } .mt-6 { margin-top: var(--sp-6); }
+.full { width: 100%; }
+.hidden { display: none !important; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

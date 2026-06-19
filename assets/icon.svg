@@ -1,0 +1,79 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XAURA">
+  <defs>
+    <!-- Gradiente oro champán principal (haces de la X) -->
+    <linearGradient id="xGold" x1="120" y1="120" x2="392" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4D58D"/>
+      <stop offset="0.5" stop-color="#E6C45E"/>
+      <stop offset="1" stop-color="#C8A24B"/>
+    </linearGradient>
+    <linearGradient id="xGoldRev" x1="392" y1="120" x2="120" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4D58D"/>
+      <stop offset="0.5" stop-color="#D9B257"/>
+      <stop offset="1" stop-color="#C8A24B"/>
+    </linearGradient>
+    <!-- Brillo especular sobre los haces -->
+    <linearGradient id="xSheen" x1="256" y1="120" x2="256" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0.4" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Fondo negro profundo con sutil elevación -->
+    <radialGradient id="bgRad" cx="0.5" cy="0.38" r="0.85">
+      <stop offset="0" stop-color="#17151A"/>
+      <stop offset="0.55" stop-color="#0E0D10"/>
+      <stop offset="1" stop-color="#0A0A0B"/>
+    </radialGradient>
+    <!-- Halo / aura dorada -->
+    <radialGradient id="auraRad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#D4AF37" stop-opacity="0.0"/>
+      <stop offset="0.62" stop-color="#D4AF37" stop-opacity="0.16"/>
+      <stop offset="0.82" stop-color="#E6C45E" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#D4AF37" stop-opacity="0.0"/>
+    </radialGradient>
+    <!-- Glow suave de los haces -->
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+      </feMerge>
+    </filter>
+    <!-- Máscara redondeada del lienzo -->
+    <clipPath id="round">
+      <rect x="0" y="0" width="512" height="512" rx="116" ry="116"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <!-- Fondo -->
+    <rect x="0" y="0" width="512" height="512" fill="url(#bgRad)"/>
+
+    <!-- Aura dorada concéntrica -->
+    <circle cx="256" cy="252" r="252" fill="url(#auraRad)"/>
+    <!-- Anillo aura tenue -->
+    <circle cx="256" cy="252" r="186" fill="none" stroke="#D4AF37" stroke-opacity="0.16" stroke-width="1.5"/>
+    <circle cx="256" cy="252" r="150" fill="none" stroke="#E6C45E" stroke-opacity="0.10" stroke-width="1"/>
+
+    <!-- Resplandor difuso bajo la X -->
+    <g filter="url(#goldGlow)" opacity="0.55">
+      <path d="M150 132 L256 238 L362 132 L392 162 L286 268 L392 374 L362 404 L256 298 L150 404 L120 374 L226 268 L120 162 Z" fill="#E6C45E"/>
+    </g>
+
+    <!-- Haz diagonal 1 (\) -->
+    <path d="M150 124 L388 362 L362 388 L124 150 Z" fill="url(#xGold)"/>
+    <!-- Haz diagonal 2 (/) -->
+    <path d="M362 124 L388 150 L150 388 L124 362 Z" fill="url(#xGoldRev)"/>
+
+    <!-- Brillo especular sobre la X -->
+    <g opacity="0.9">
+      <path d="M150 124 L388 362 L362 388 L124 150 Z" fill="url(#xSheen)"/>
+      <path d="M362 124 L388 150 L150 388 L124 362 Z" fill="url(#xSheen)"/>
+    </g>
+
+    <!-- Núcleo brillante en el cruce -->
+    <circle cx="256" cy="256" r="20" fill="#FBF0CF"/>
+    <circle cx="256" cy="256" r="34" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="2"/>
+
+    <!-- Borde interior fino dorado del lienzo -->
+    <rect x="2.5" y="2.5" width="507" height="507" rx="113.5" ry="113.5" fill="none" stroke="#D4AF37" stroke-opacity="0.28" stroke-width="2"/>
+  </g>
+</svg>

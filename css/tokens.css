@@ -1,0 +1,153 @@
+/* ============================================================================
+   XAURA · tokens.css
+   Sistema de diseño (SPEC §2). Cargar PRIMERO.
+   Variables de color, vidrio, tipografía, espaciado, radios, sombras,
+   gráficos y movimiento. Tema oscuro por defecto; claro vía [data-theme="light"].
+   ============================================================================ */
+
+/* ===== FUENTES (autoalojar .woff2 en /assets/fonts para offline real;
+   este @import es el fallback de desarrollo) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ===== SUPERFICIES OSCURAS ===== */
+  --bg-base:        #0A0A0B;
+  --bg-surface-1:   #141417;
+  --bg-surface-2:   #1E1E23;
+  --bg-surface-3:   #28282F;
+  --bg-elevated:    #34343C;
+
+  /* Vidrio */
+  --glass-bg:        rgba(30, 30, 35, 0.55);
+  --glass-bg-strong: rgba(20, 20, 23, 0.72);
+  --glass-border:    rgba(212, 175, 55, 0.22);
+  --glass-border-n:  rgba(255, 255, 255, 0.07);
+  --glass-blur:      18px;
+  --glass-blur-bar:  26px;
+
+  /* ===== TEXTO ===== */
+  --text-primary:   #F5F5F7;
+  --text-secondary: #9A9AA4;
+  --text-tertiary:  #6E6E78;
+  --text-on-gold:   #1A1408;
+
+  /* ===== ACENTO DORADO (el "aura") ===== */
+  --gold:           #D4AF37;
+  --gold-soft:      #F4D58D;
+  --gold-deep:      #C8A24B;
+  --gold-100:       rgba(212, 175, 55, 0.10);
+  --gold-200:       rgba(212, 175, 55, 0.18);
+  --gold-300:       rgba(212, 175, 55, 0.30);
+  --gold-glow:      rgba(212, 175, 55, 0.35);
+  --gradient-gold:  linear-gradient(180deg, #E6C45E 0%, #C8A24B 100%);
+  --gradient-aura:  radial-gradient(120% 120% at 50% 0%, rgba(212,175,55,0.16) 0%, rgba(212,175,55,0) 60%);
+
+  /* ===== SEMÁNTICOS ===== */
+  --positive:    #34D399;  --positive-bg: rgba(52, 211, 153, 0.12);
+  --negative:    #F87171;  --negative-bg: rgba(248, 113, 113, 0.12);
+  --neutral:     #5E9DF6;  --neutral-bg:  rgba(94, 157, 246, 0.12);
+  --warning:     #FBBF24;  --warning-bg:  rgba(251, 191, 36, 0.12);
+
+  /* Acentos por área */
+  --area-personal: #D4AF37;  /* oro */
+  --area-eventos:  #C084FC;  /* púrpura */
+  --area-trading:  #5E9DF6;  /* azul-tech (USD) */
+  --area-eventos-bg: rgba(192, 132, 252, 0.12);
+  --area-trading-bg: rgba(94, 157, 246, 0.12);
+
+  /* ===== BORDES / LÍNEAS ===== */
+  --border-subtle: #26262C;
+  --border-strong: #3A3A42;
+  --grid-line:     rgba(255, 255, 255, 0.06);
+
+  /* ===== TIPOGRAFÍA ===== */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Sora', -apple-system, system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'SF Mono', monospace;
+
+  --fs-display: 34px; --fs-h1: 26px; --fs-h2: 21px; --fs-h3: 17px;
+  --fs-body: 15px; --fs-sm: 13px; --fs-xs: 11px;
+  --lh-tight: 1.15; --lh-normal: 1.5;
+  --ls-wide: 0.14em; --ls-num: 0.01em;
+
+  /* ===== ESPACIADO / RADIOS / SOMBRAS ===== */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 22px; --r-pill: 999px;
+
+  --sh-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --sh-md: 0 8px 24px rgba(0,0,0,0.45);
+  --sh-lg: 0 20px 48px rgba(0,0,0,0.55);
+  --sh-gold: 0 6px 22px rgba(212,175,55,0.22);
+
+  /* ===== GRÁFICOS ===== */
+  --chart-line:      #D4AF37;
+  --chart-line-2:    #5E9DF6;
+  --chart-area-from: rgba(212,175,55,0.18);
+  --chart-area-to:   rgba(212,175,55,0.00);
+  --chart-bar:       #C8A24B;
+  --chart-bar-track: rgba(255,255,255,0.05);
+  --chart-pos:       #34D399;
+  --chart-neg:       #F87171;
+  --chart-grid:      rgba(255,255,255,0.06);
+  --chart-axis-text: #6E6E78;
+
+  /* ===== MOVIMIENTO ===== */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 400ms;
+
+  /* ===== LAYOUT (alturas fijas reutilizadas en layout/components) ===== */
+  --header-h: 56px;
+  --nav-h: 64px;
+  --fab-size: 60px;
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+}
+
+/* ===== TEMA CLARO (opcional) ===== */
+:root[data-theme="light"] {
+  --bg-base: #F7F5F0; --bg-surface-1: #FFFFFF; --bg-surface-2: #FBFAF6;
+  --bg-surface-3: #F1EEE6; --bg-elevated: #FFFFFF;
+  --glass-bg: rgba(255,255,255,0.65); --glass-bg-strong: rgba(251,250,246,0.80);
+  --glass-border: rgba(180,142,40,0.28); --glass-border-n: rgba(0,0,0,0.06);
+  --text-primary: #1A1A1E; --text-secondary: #5C5C66; --text-tertiary: #8E8E98;
+  --text-on-gold: #1A1408;
+  --gold: #B8901F; --gold-soft: #9A7615; --gold-deep: #A07E1C;
+  --gold-100: rgba(184,144,31,0.10); --gold-200: rgba(184,144,31,0.18);
+  --gold-300: rgba(184,144,31,0.35); --gold-glow: rgba(184,144,31,0.30);
+  --gradient-gold: linear-gradient(180deg, #C8A23C 0%, #A07E1C 100%);
+  --gradient-aura: radial-gradient(120% 120% at 50% 0%, rgba(184,144,31,0.12) 0%, rgba(184,144,31,0) 60%);
+  --positive: #0F9D6B; --negative: #DC4C4C; --neutral: #2F7BD6; --warning: #C98A06;
+  --positive-bg: rgba(15,157,107,0.10); --negative-bg: rgba(220,76,76,0.10);
+  --neutral-bg: rgba(47,123,214,0.10); --warning-bg: rgba(201,138,6,0.12);
+  --area-personal: #B8901F; --area-eventos: #9333EA; --area-trading: #2F7BD6;
+  --area-eventos-bg: rgba(147,51,234,0.10); --area-trading-bg: rgba(47,123,214,0.10);
+  --border-subtle: #E5E1D8; --border-strong: #D2CDC0; --grid-line: rgba(0,0,0,0.06);
+  --chart-line: #B8901F; --chart-line-2: #2F7BD6; --chart-bar: #A07E1C;
+  --chart-area-from: rgba(184,144,31,0.20); --chart-area-to: rgba(184,144,31,0.00);
+  --chart-bar-track: rgba(0,0,0,0.05); --chart-pos: #0F9D6B; --chart-neg: #DC4C4C;
+  --chart-grid: rgba(0,0,0,0.06); --chart-axis-text: #8E8E98;
+  --sh-sm: 0 1px 2px rgba(0,0,0,0.10);
+  --sh-md: 0 8px 24px rgba(60,50,20,0.12);
+  --sh-lg: 0 20px 48px rgba(60,50,20,0.16);
+  --sh-gold: 0 6px 22px rgba(184,144,31,0.20);
+}
+
+/* ===== MOVIMIENTO REDUCIDO ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== FALLBACK SIN backdrop-filter ===== */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .x-glass, .x-glass--bar { background: var(--bg-surface-2) !important; }
+}

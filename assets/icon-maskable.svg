@@ -1,0 +1,63 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XAURA">
+  <defs>
+    <!-- Gradiente oro champán principal (haces de la X), escalado al 80% central -->
+    <linearGradient id="mxGold" x1="154" y1="154" x2="358" y2="358" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4D58D"/>
+      <stop offset="0.5" stop-color="#E6C45E"/>
+      <stop offset="1" stop-color="#C8A24B"/>
+    </linearGradient>
+    <linearGradient id="mxGoldRev" x1="358" y1="154" x2="154" y2="358" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4D58D"/>
+      <stop offset="0.5" stop-color="#D9B257"/>
+      <stop offset="1" stop-color="#C8A24B"/>
+    </linearGradient>
+    <linearGradient id="mxSheen" x1="256" y1="154" x2="256" y2="358" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0.4" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="mbgRad" cx="0.5" cy="0.4" r="0.9">
+      <stop offset="0" stop-color="#15131A"/>
+      <stop offset="0.55" stop-color="#0D0C10"/>
+      <stop offset="1" stop-color="#0A0A0B"/>
+    </radialGradient>
+    <radialGradient id="mauraRad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#D4AF37" stop-opacity="0.0"/>
+      <stop offset="0.6" stop-color="#D4AF37" stop-opacity="0.16"/>
+      <stop offset="0.82" stop-color="#E6C45E" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#D4AF37" stop-opacity="0.0"/>
+    </radialGradient>
+    <filter id="mgoldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fondo negro a sangre completa (sin recorte) -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#mbgRad)"/>
+
+  <!-- Aura dorada dentro del área segura -->
+  <circle cx="256" cy="256" r="205" fill="url(#mauraRad)"/>
+  <circle cx="256" cy="256" r="152" fill="none" stroke="#D4AF37" stroke-opacity="0.15" stroke-width="1.4"/>
+  <circle cx="256" cy="256" r="122" fill="none" stroke="#E6C45E" stroke-opacity="0.09" stroke-width="1"/>
+
+  <!-- Monograma X dentro del 80% central (radio seguro ~205px desde el centro) -->
+  <g filter="url(#mgoldGlow)" opacity="0.5">
+    <path d="M178 160 L256 238 L334 160 L358 184 L280 262 L358 340 L334 364 L256 286 L178 364 L154 340 L232 262 L154 184 Z" fill="#E6C45E"/>
+  </g>
+
+  <!-- Haz diagonal 1 (\) -->
+  <path d="M178 154 L362 338 L338 362 L154 178 Z" fill="url(#mxGold)"/>
+  <!-- Haz diagonal 2 (/) -->
+  <path d="M334 154 L358 178 L178 358 L154 334 Z" fill="url(#mxGoldRev)"/>
+
+  <!-- Brillo especular -->
+  <g opacity="0.9">
+    <path d="M178 154 L362 338 L338 362 L154 178 Z" fill="url(#mxSheen)"/>
+    <path d="M334 154 L358 178 L178 358 L154 334 Z" fill="url(#mxSheen)"/>
+  </g>
+
+  <!-- Núcleo del cruce -->
+  <circle cx="256" cy="256" r="16" fill="#FBF0CF"/>
+  <circle cx="256" cy="256" r="27" fill="none" stroke="#FFFFFF" stroke-opacity="0.32" stroke-width="1.6"/>
+</svg>

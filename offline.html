@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Sin conexión · XAURA</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <style>
+    /* ===== Tokens mínimos autocontenidos (no depende de CSS externo) ===== */
+    :root{
+      --bg-base:#0A0A0B; --bg-surface-2:#1E1E23;
+      --glass-bg:rgba(30,30,35,.55); --glass-border:rgba(212,175,55,.22);
+      --text-primary:#F5F5F7; --text-secondary:#9A9AA4; --text-tertiary:#6E6E78;
+      --gold:#D4AF37; --gold-soft:#F4D58D; --gold-deep:#C8A24B; --text-on-gold:#1A1408;
+      --r-lg:16px; --r-pill:999px;
+      --font-serif:'Cormorant Garamond',Georgia,serif;
+      --font-sans:'Sora',-apple-system,system-ui,Segoe UI,Roboto,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(212,175,55,.14) 0%, rgba(212,175,55,0) 58%),
+        radial-gradient(140% 120% at 50% 110%, #141417 0%, var(--bg-base) 60%);
+      color:var(--text-primary);
+      font-family:var(--font-sans);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      min-height:100svh;
+      display:grid; place-items:center;
+      padding:calc(env(safe-area-inset-top) + 24px) 24px
+              calc(env(safe-area-inset-bottom) + 24px);
+      overflow:hidden;
+    }
+    .wrap{
+      position:relative; width:100%; max-width:380px;
+      text-align:center;
+      display:flex; flex-direction:column; align-items:center; gap:26px;
+    }
+
+    /* ===== Aura + monograma ===== */
+    .mark{ position:relative; width:120px; height:120px; }
+    .mark::before{
+      content:""; position:absolute; inset:-46%;
+      background:radial-gradient(circle at 50% 46%,
+        rgba(212,175,55,.30) 0%, rgba(212,175,55,.12) 42%, rgba(212,175,55,0) 70%);
+      filter:blur(2px);
+      animation:breathe 4.6s ease-in-out infinite;
+    }
+    .mark svg{ position:relative; width:120px; height:120px; display:block;
+      filter:drop-shadow(0 10px 26px rgba(212,175,55,.28)); }
+    @keyframes breathe{
+      0%,100%{ opacity:.65; transform:scale(.98); }
+      50%    { opacity:1;   transform:scale(1.04); }
+    }
+
+    /* ===== Textos ===== */
+    .eyebrow{
+      font-size:11px; letter-spacing:.32em; text-transform:uppercase;
+      color:var(--gold-soft); font-weight:500;
+    }
+    h1{
+      font-family:var(--font-serif); font-weight:500;
+      font-size:34px; line-height:1.12; letter-spacing:.01em;
+      color:var(--text-primary);
+    }
+    p.lead{
+      font-size:14.5px; line-height:1.6; color:var(--text-secondary);
+      max-width:300px;
+    }
+
+    /* ===== Tarjeta de estado (glass) ===== */
+    .card{
+      width:100%;
+      background:var(--glass-bg);
+      -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+      border:1px solid var(--glass-border);
+      border-radius:var(--r-lg);
+      padding:16px 18px;
+      display:flex; align-items:center; gap:12px;
+      text-align:left;
+      box-shadow:0 20px 48px rgba(0,0,0,.55);
+    }
+    @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+      .card{ background:var(--bg-surface-2); }
+    }
+    .dot{
+      flex:0 0 auto; width:9px; height:9px; border-radius:50%;
+      background:var(--gold); box-shadow:0 0 0 4px rgba(212,175,55,.16);
+      animation:pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ opacity:.55; transform:scale(.9); }
+      50%    { opacity:1;   transform:scale(1.15); }
+    }
+    .card .txt{ display:flex; flex-direction:column; gap:2px; }
+    .card .t1{ font-size:13.5px; font-weight:500; color:var(--text-primary); }
+    .card .t2{ font-size:12px; color:var(--text-tertiary); }
+
+    /* ===== Botón reintentar ===== */
+    .btn{
+      -webkit-appearance:none; appearance:none; border:0; cursor:pointer;
+      font-family:var(--font-sans); font-size:14px; font-weight:600;
+      letter-spacing:.01em;
+      color:var(--text-on-gold);
+      background:linear-gradient(180deg,#E6C45E 0%, #C8A24B 100%);
+      border-radius:var(--r-pill);
+      padding:13px 30px;
+      box-shadow:0 6px 22px rgba(212,175,55,.30);
+      transition:transform .12s cubic-bezier(.16,1,.3,1), box-shadow .2s ease, opacity .2s ease;
+      min-height:46px;
+    }
+    .btn:active{ transform:scale(.97); }
+    .btn:focus-visible{ outline:2px solid var(--gold-soft); outline-offset:3px; }
+    .btn[aria-busy="true"]{ opacity:.7; pointer-events:none; }
+
+    .foot{
+      font-size:11px; letter-spacing:.04em; color:var(--text-tertiary);
+      line-height:1.5;
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{ animation:none !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XAURA">
+        <defs>
+          <linearGradient id="oGold" x1="124" y1="124" x2="388" y2="388" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#F4D58D"/>
+            <stop offset=".5" stop-color="#E6C45E"/>
+            <stop offset="1" stop-color="#C8A24B"/>
+          </linearGradient>
+          <linearGradient id="oGoldRev" x1="388" y1="124" x2="124" y2="388" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#F4D58D"/>
+            <stop offset=".5" stop-color="#D9B257"/>
+            <stop offset="1" stop-color="#C8A24B"/>
+          </linearGradient>
+        </defs>
+        <circle cx="256" cy="252" r="186" fill="none" stroke="#D4AF37" stroke-opacity=".16" stroke-width="1.5"/>
+        <circle cx="256" cy="252" r="150" fill="none" stroke="#E6C45E" stroke-opacity=".10" stroke-width="1"/>
+        <path d="M150 124 L388 362 L362 388 L124 150 Z" fill="url(#oGold)"/>
+        <path d="M362 124 L388 150 L150 388 L124 362 Z" fill="url(#oGoldRev)"/>
+        <circle cx="256" cy="256" r="18" fill="#FBF0CF"/>
+        <circle cx="256" cy="256" r="30" fill="none" stroke="#FFFFFF" stroke-opacity=".30" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div>
+      <p class="eyebrow">XAURA</p>
+      <h1>Sin conexión</h1>
+    </div>
+
+    <p class="lead">
+      No pudimos cargar esta pantalla. Tus datos siguen a salvo en este
+      dispositivo. Vuelve a intentarlo cuando recuperes la señal.
+    </p>
+
+    <div class="card" role="status">
+      <span class="dot"></span>
+      <span class="txt">
+        <span class="t1" id="netState">Esperando conexión…</span>
+        <span class="t2">XAURA funciona offline una vez instalada.</span>
+      </span>
+    </div>
+
+    <button class="btn" id="retry" type="button">Reintentar</button>
+
+    <p class="foot">Tus datos viven solo en este dispositivo. Sin nube, sin cuentas.</p>
+  </main>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('retry');
+      var state = document.getElementById('netState');
+
+      function reload() {
+        if (btn) { btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Reconectando…'; }
+        // Recarga la app (no esta página): vuelve a la raíz del scope.
+        window.location.replace('./');
+      }
+
+      function paintState() {
+        if (!state) return;
+        if (navigator.onLine) {
+          state.textContent = 'Conexión detectada';
+        } else {
+          state.textContent = 'Esperando conexión…';
+        }
+      }
+
+      if (btn) btn.addEventListener('click', reload);
+
+      // Si vuelve la red, reintenta automáticamente.
+      window.addEventListener('online', function () { paintState(); reload(); });
+      window.addEventListener('offline', paintState);
+
+      paintState();
+    })();
+  </script>
+</body>
+</html>

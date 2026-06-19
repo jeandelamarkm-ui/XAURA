@@ -1,0 +1,544 @@
+/* ============================================================================
+   XAURA · views.css
+   Estilos específicos por vista que no encajan en components/layout:
+   dashboard hero, snapshot HOY, racha, calendario/heatmap de trading,
+   embudo de eventos, tablas de reportes, calendario mensual y onboarding.
+   ============================================================================ */
+
+/* ===== SALUDO + RACHA (Dashboard A) ===== */
+.greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+.greeting__hi {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+  color: var(--text-primary);
+}
+.greeting__date {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+.streak-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--gold-100);
+  border: 1px solid var(--gold-300);
+  flex-shrink: 0;
+}
+.streak-chip__flame { color: var(--gold); display: inline-flex; }
+.streak-chip__flame svg { width: 18px; height: 18px; }
+.streak-chip__count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--gold);
+}
+.streak-chip__unit { font-size: var(--fs-xs); color: var(--text-secondary); }
+
+/* Banner de racha (sin registrar hoy / hito) */
+.streak-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--gold-100);
+  border: 1px solid var(--gold-300);
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+  margin-bottom: var(--sp-4);
+}
+.streak-banner svg { width: 22px; height: 22px; color: var(--gold); flex-shrink: 0; }
+
+/* ===== HERO PATRIMONIO (Dashboard B) ===== */
+.hero-patrimonio {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  border-radius: var(--r-xl);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+.hero-patrimonio::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--gradient-aura);
+  pointer-events: none;
+}
+.hero-patrimonio > * { position: relative; }
+.hero-patrimonio__label {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.hero-patrimonio__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: clamp(30px, 10vw, var(--fs-display));
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1.05;
+}
+.hero-patrimonio__approx { color: var(--text-tertiary); font-size: 0.7em; font-weight: 500; }
+.hero-patrimonio__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.hero-patrimonio__rate {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+.hero-patrimonio__rate svg { width: 14px; height: 14px; }
+
+/* ===== SNAPSHOT HOY (Dashboard C) ===== */
+.snapshot-today {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+}
+.snapshot-balance {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+}
+.snapshot-balance__label { font-size: var(--fs-sm); color: var(--text-secondary); }
+.snapshot-balance__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-h3);
+}
+
+/* Tarjeta de módulo (Dashboard E) */
+.module-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border-n);
+}
+.module-card__body { flex: 1 1 auto; min-width: 0; }
+.module-card__name {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-sm); font-weight: 600; color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.module-card__name .dot { width: 8px; height: 8px; border-radius: var(--r-pill); }
+.module-card__metric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  color: var(--text-primary);
+}
+.module-card__sub { font-size: var(--fs-xs); color: var(--text-secondary); }
+.module-card__spark { width: 84px; height: 36px; flex-shrink: 0; }
+.module-card__chevron { color: var(--text-tertiary); flex-shrink: 0; }
+
+/* ===== CALENDARIO / HEATMAP DE TRADING ===== */
+.cal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--sp-1);
+}
+.cal__dow {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding-bottom: var(--sp-1);
+}
+.cal__cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: var(--r-sm);
+  background: var(--bg-surface-2);
+  border: 1px solid transparent;
+}
+.cal__cell--empty { background: transparent; }
+.cal__cell--flat { background: var(--bg-surface-3); }
+.cal__day {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.cal__pnl {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 9px;
+  font-weight: 600;
+}
+.cal__cell--today { border-color: var(--gold); }
+/* Cuantiles de intensidad (heatmap) */
+.cal__cell--g1 { background: rgba(52,211,153,0.18); }
+.cal__cell--g2 { background: rgba(52,211,153,0.34); }
+.cal__cell--g3 { background: rgba(52,211,153,0.52); }
+.cal__cell--g4 { background: rgba(52,211,153,0.72); }
+.cal__cell--r1 { background: rgba(248,113,113,0.18); }
+.cal__cell--r2 { background: rgba(248,113,113,0.34); }
+.cal__cell--r3 { background: rgba(248,113,113,0.52); }
+.cal__cell--r4 { background: rgba(248,113,113,0.72); }
+.cal__cell--g3 .cal__day, .cal__cell--g4 .cal__day,
+.cal__cell--r3 .cal__day, .cal__cell--r4 .cal__day { color: var(--text-primary); }
+.cal-legend {
+  display: flex; align-items: center; gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+.cal-legend__scale { display: inline-flex; gap: 3px; }
+.cal-legend__box { width: 14px; height: 14px; border-radius: 3px; }
+
+/* ===== CALENDARIO MENSUAL DE EVENTOS (puntos) ===== */
+.month-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--sp-1); }
+.month-cal__cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm);
+  background: var(--bg-surface-2);
+}
+.month-cal__cell--empty { background: transparent; }
+.month-cal__cell--today { outline: 1px solid var(--gold); }
+.month-cal__num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+.month-cal__dots { display: flex; gap: 2px; margin-top: 3px; height: 5px; }
+.month-cal__dot { width: 5px; height: 5px; border-radius: var(--r-pill); }
+
+/* ===== EMBUDO DE EVENTOS (funnel — soporte HTML del SVG) ===== */
+.funnel-stats { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-3); }
+.funnel-stat {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--bg-surface-2);
+}
+.funnel-stat__label { display: inline-flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-secondary); }
+.funnel-stat__bar-dot { width: 9px; height: 9px; border-radius: 2px; }
+.funnel-stat__nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+}
+
+/* Tarjeta de evento (lista) */
+.event-card {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+}
+.event-card__date {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: var(--r-md);
+  background: var(--area-eventos-bg);
+  color: var(--area-eventos);
+}
+.event-card__day { font-family: var(--font-mono); font-weight: 600; font-size: var(--fs-h2); line-height: 1; }
+.event-card__mon { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.event-card__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.event-card__name { font-size: var(--fs-body); font-weight: 600; color: var(--text-primary); }
+.event-card__meta { font-size: var(--fs-xs); color: var(--text-tertiary); display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.event-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); margin-top: 2px; }
+.event-card__amount { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text-primary); }
+
+/* ===== TABLAS DE REPORTES ===== */
+.report-table {
+  width: 100%;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+}
+.report-table table { width: 100%; border-collapse: collapse; }
+.report-table th, .report-table td {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  font-size: var(--fs-sm);
+}
+.report-table thead th {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-strong);
+}
+.report-table tbody tr + tr td { border-top: 1px solid var(--border-subtle); }
+.report-table td.num, .report-table th.num {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.report-table td.num--pos { color: var(--positive); }
+.report-table td.num--neg { color: var(--negative); }
+.report-table tfoot td {
+  font-weight: 600;
+  background: var(--bg-surface-2);
+  border-top: 1px solid var(--border-strong);
+  color: var(--text-primary);
+}
+.report-table tbody tr.is-overdue td { background: var(--negative-bg); }
+
+/* Card de stat de trading (10 tarjetas) */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  min-width: 0;
+}
+.stat-card__label {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.stat-card__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  color: var(--text-primary);
+}
+.stat-card__sub { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--fs-xs); color: var(--text-secondary); }
+
+/* Score de consistencia */
+.score-ring { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-4); }
+.score-ring__num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-display);
+  color: var(--gold);
+}
+
+/* ===== ONBOARDING CARRUSEL ===== */
+.onboarding {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + var(--sp-6)) var(--sp-5) calc(var(--safe-bottom) + var(--sp-6));
+  background: var(--bg-base);
+  background-image: var(--gradient-aura);
+}
+.onboarding__progress {
+  display: flex; gap: var(--sp-2);
+  margin-bottom: var(--sp-8);
+}
+.onboarding__dot {
+  flex: 1 1 0;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--bg-surface-3);
+  overflow: hidden;
+}
+.onboarding__dot--done { background: var(--gold-300); }
+.onboarding__dot--active::after {
+  content: "";
+  display: block; height: 100%; width: 100%;
+  background: var(--gradient-gold);
+  animation: ob-fill var(--dur-slow) var(--ease-out) both;
+  transform-origin: left;
+}
+@keyframes ob-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.onboarding__track {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+}
+.onboarding__slide {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  animation: x-enter var(--dur-slow) var(--ease-out) both;
+}
+.onboarding__logo {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 44px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.onboarding__logo .aura { color: var(--gold); }
+.onboarding__title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--fs-h1);
+  color: var(--text-primary);
+  max-width: 18ch;
+}
+.onboarding__text { font-size: var(--fs-body); color: var(--text-secondary); max-width: 30ch; }
+.onboarding__field { width: 100%; max-width: 320px; }
+.onboarding__choice { display: grid; gap: var(--sp-3); width: 100%; max-width: 320px; }
+.onboarding__foot {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+.onboarding__foot .btn { flex: 1 1 0; }
+.onboarding__skip {
+  background: none;
+  color: var(--text-tertiary);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  align-self: center;
+  padding: var(--sp-2);
+}
+
+/* ===== DETALLE DE EVENTO / TRADING — barra de progreso de cobro ===== */
+.collect-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+}
+.collect-bar__top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+}
+.collect-bar__paid { color: var(--positive); }
+.collect-bar__pending { color: var(--warning); }
+
+/* Pestañas internas (sub-vistas) ya cubiertas por .segmented; aquí el contenedor */
+.subnav-wrap { margin-bottom: var(--sp-5); }
+
+/* Toggle de rango de gráfico (1M/3M/6M/1A/Todo) */
+.range-toggle { display: inline-flex; gap: var(--sp-1); }
+.range-toggle__btn {
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: transparent;
+}
+.range-toggle__btn.is-active { color: var(--text-on-gold); background: var(--gradient-gold); }
+
+/* Item de reporte de patrimonio (export a canvas) */
+.export-canvas-wrap {
+  width: 100%;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bg-surface-1);
+}
+
+/* Información "ⓘ" referencial */
+.info-note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+.info-note svg { width: 13px; height: 13px; }
+
+/* Acordeón (instalar app en Ajustes) */
+.accordion { border-radius: var(--r-lg); overflow: hidden; background: var(--bg-surface-1); border: 1px solid var(--border-subtle); }
+.accordion__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  font-size: var(--fs-body); font-weight: 500; color: var(--text-primary);
+}
+.accordion__head svg { width: 18px; height: 18px; color: var(--text-tertiary); transition: transform var(--dur-base) var(--ease-soft); }
+.accordion.is-open .accordion__head svg { transform: rotate(180deg); }
+.accordion__body {
+  max-height: 0; overflow: hidden;
+  transition: max-height var(--dur-slow) var(--ease-out);
+}
+.accordion.is-open .accordion__body { max-height: 420px; }
+.accordion__inner {
+  padding: 0 var(--sp-4) var(--sp-4);
+  font-size: var(--fs-sm); color: var(--text-secondary); line-height: var(--lh-normal);
+}
+.accordion__inner ol { padding-left: var(--sp-5); list-style: decimal; }
+.accordion__inner li + li { margin-top: var(--sp-2); }
+
+/* ===== ERROR DE RUTA (fallback del router) ===== */
+.route-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-6) var(--sp-4);
+  margin-top: var(--sp-8);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+}
+.route-error .x-h3 { color: var(--text-primary); }
+.route-error .btn { align-self: stretch; }
