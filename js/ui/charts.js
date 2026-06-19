@@ -1750,8 +1750,13 @@ export function histogram(target, bins, opts = {}) {
     return null;
   }
 
-  // Líneas media / mediana.
-  [['mean', opts.mean, 'var(--gold)', 'media'], ['median', opts.median, 'var(--neutral, #5E9DF6)', 'mediana']].forEach(([, val, color, lab]) => {
+  // Líneas media / mediana. Etiquetas a distinta altura (media arriba, mediana
+  // abajo) y ancladas dentro del área, para que NO se solapen cuando media y
+  // mediana caen cerca, ni se salgan por los bordes.
+  [
+    ['mean', opts.mean, 'var(--gold)', 'media', y0 + 8],
+    ['median', opts.median, 'var(--neutral, #5E9DF6)', 'mediana', H - 4],
+  ].forEach(([, val, color, lab, ly]) => {
     if (!Number.isFinite(val)) return;
     const mx = valueToX(val);
     if (mx == null) return;
@@ -1759,7 +1764,8 @@ export function histogram(target, bins, opts = {}) {
       x1: mx, x2: mx, y1: y0, y2: y1,
       stroke: color, 'stroke-width': 1.5, 'stroke-dasharray': '4 3',
     }));
-    const t = axisText(mx, H - 4, lab, { size: 9, fill: color });
+    const lx = Math.max(x0 + 18, Math.min(mx, x1 - 18));
+    const t = axisText(lx, ly, lab, { size: 9, fill: color });
     svg.appendChild(t);
   });
 
